@@ -1,9 +1,10 @@
-import ReactDOM from 'react-dom'
-import React from 'react'
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 import App from "./components/App";
 
 const init = async () => { 
-  ReactDOM.render(<App />, document.getElementById("root"));
+  const root = createRoot(document.getElementById("root"));
+  root.render(<App />);
 }
 
 init();
