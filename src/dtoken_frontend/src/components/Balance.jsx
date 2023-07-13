@@ -5,12 +5,11 @@ import { Principal } from "@dfinity/principal";
 function Balance() {
   
   const [inputPrincipal, setInputPrincipal] = useState("");
-  const [balance, setBalance] = useState("XYZ");
+  const [balance, setBalance] = useState("");
   const [symbol, setSymbol] = useState("");
   const [isHidden, setIsHidden] = useState(true);
 
   async function handleClick() {
-    console.log("Balance Button Clicked");
     try{
       const prin = Principal.fromText(inputPrincipal);
       const newBalance = await dtoken_backend.balanceOf(prin);
