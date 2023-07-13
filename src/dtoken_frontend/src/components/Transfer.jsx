@@ -6,13 +6,16 @@ function Transfer() {
 
   const [transferObj, setTransferObj] = useState({to: "", amount: 0});
   const [buttonText, setButtonText] = useState("Transfer");
+  const [isDisabled, setIsDisabled] = useState(false);
   
   async function handleClick() {
+    setIsDisabled(true);
     console.log(transferObj);
     const prin = Principal.fromText(transferObj.to);
     console.log(prin);
     const response = await dtoken_backend.transfer(prin, parseFloat(transferObj.amount));
     setButtonText(response);
+    setIsDisabled(false);
   }
 
   return (
@@ -55,7 +58,7 @@ function Transfer() {
           </ul>
         </fieldset>
         <p className="trade-buttons">
-          <button id="btn-transfer" onClick={handleClick} >
+          <button id="btn-transfer" onClick={handleClick} disabled={isDisabled}>
             {buttonText}
           </button>
         </p>
