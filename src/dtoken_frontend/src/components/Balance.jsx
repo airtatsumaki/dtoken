@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import { dtoken_backend } from "../../../declarations/dtoken_backend";
+import { Principal } from "@dfinity/principal";
 
 function Balance() {
   
+  const [inputPrincipal, setInputPrincipal] = useState("");
+  const [balance, setBalance] = useState("XYZ");
+  const [symbol, setSymbol] = useState("");
+  const [isHidden, setIsHidden] = useState(true);
+
   async function handleClick() {
     console.log("Balance Button Clicked");
+    try{
+      const prin = Principal.fromText(inputPrincipal);
+      const newBalance = await dtoken_backend.balanceOf(prin);
+      setBalance(newBalance.toLocaleString());
+      const newSymbol = await dtoken_backend.getSymbol();
+      setSymbol(newSymbol);
+      setIsHidden(false);
+    } catch(err) {
+      console.log(err);
+      setBalance(0);
+      setIsHidden(true);
+    }
   }
-
 
   return (
     <div className="window white">
@@ -15,6 +33,8 @@ function Balance() {
           id="balance-principal-id"
           type="text"
           placeholder="Enter a Principal ID"
+          value={inputPrincipal}
+          onChange={(e) => setInputPrincipal(e.target.value)}
         />
       </p>
       <p className="trade-buttons">
@@ -25,7 +45,7 @@ function Balance() {
           Check Balance
         </button>
       </p>
-      <p>This account has a balance of XYZ.</p>
+      <p hidden={isHidden}>This account has a balance of {balance} {symbol}.</p>
     </div>
   );
 }
